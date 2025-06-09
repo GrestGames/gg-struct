@@ -1,17 +1,30 @@
-When to use this formula: Nmin  ≈  C / ( (24 + 8 P) − 23 )
-* C - code size, around ~60KB
-* P - number of properties
 
-It makes in general sense to start using this library if you have more than 1000+ objects. (depends on how many bytes per object as well).
 
-With less objects, code itself that is generated takes more memory than your actual objects.
-In addition, less than 1000 objects is still fast in JS, no garbage collector issues and so on.
+Ultra-fast struct like library for typescript supporting SoA, AoS, AoSoA architectures.
+Library is heavily optimized for JS engines to get maximum performance out of those. If you spot possible improvements, let me know.
 
-What does this library mainly solve
-* If you have more than 10000+ entities in the game
-  - It will use less memory - generally good benefit for browsers on weaker machines. Depends, but around 6x less.
-  - No objects - good for Firefox for example, where garbage collector starts causing freezes during cleanup if amount of objects is big. Less relevant for chromium.
-    Library itself does create some objects, but that number is constant
-  - Faster access / looping over data (about 20%)
-  - You need to export your game data to webworkers, then this library allows triple buffer system. (for example, you have game calculations in one worker and graphics in another, it is very fast to sync data with this library.).
+It makes sense to use this library if you need thousands of objects!
+
+Main benefits:
+* Uses about 8x less memory compared to JS objects.
+* Set/get about 20% faster compared to JS objects.
+* No garbage collection issues, as there are very few objects used by the library itself. All data is stured in ArrayBuffer-rs (Massive bonus for Firefox!)
+* Export / Import support, if you want to use workers, it is very cheap to send data to workers. Uses triple buffering. SharedArrayBuffer is not supported, as for iframe games it can't be used on most sites.
+* You can try out SoA, AoS, AoSoA architectures free of charge, just change the definition, regenerate accessor class and you are good to benchmark which works best for your game.
+
+Define structure
+file: MyObjPool.struct.ts
+new Struct()
+    .ref<tRef>()
+    .buffer()
+    .int16("x")
+    .int16("y");
+
+And run generation, this generates classes for your usage
+
+Main usage
+const pool = new MyObjPool();
+const ref = pool.new();
+pool.setX(ref, 10);
+console.log(pool.getX(ref));
 
