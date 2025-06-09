@@ -1,0 +1,17 @@
+When to use this formula: Nmin  ≈  C / ( (24 + 8 P) − 23 )
+* C - code size, around ~60KB
+* P - number of properties
+
+It makes in general sense to start using this library if you have more than 1000+ objects. (depends on how many bytes per object as well).
+
+With less objects, code itself that is generated takes more memory than your actual objects.
+In addition, less than 1000 objects is still fast in JS, no garbage collector issues and so on.
+
+What does this library mainly solve
+* If you have more than 10000+ entities in the game
+  - It will use less memory - generally good benefit for browsers on weaker machines. Depends, but around 6x less.
+  - No objects - good for Firefox for example, where garbage collector starts causing freezes during cleanup if amount of objects is big. Less relevant for chromium.
+    Library itself does create some objects, but that number is constant
+  - Faster access / looping over data (about 20%)
+  - You need to export your game data to webworkers, then this library allows triple buffer system. (for example, you have game calculations in one worker and graphics in another, it is very fast to sync data with this library.).
+

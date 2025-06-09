@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2023"
+    ],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
+    "resolveJsonModule": true,
+    "isolatedModules": false,
+    "preserveConstEnums": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "composite": false,
+    /* Linting */
+    "strict": false,
+    "alwaysStrict": true,
+    // Strict mode (9)
+    //"strictNullChecks": true,
+    //"strictPropertyInitialization": true,
+    //"exactOptionalPropertyTypes": true,
+    //"strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "useUnknownInCatchVariables": true,
+    "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noFallthroughCasesInSwitch": true,
+    // No unused code (4)
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    // No implicit code (2)
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    // ----
+    "forceConsistentCasingInFileNames": true,
+    "emitDeclarationOnly": false,
+    "allowJs": false,
+    "checkJs": false
+  },
+  "include": [
+    "vite.config.ts",
+    "src"
+  ]
+}
