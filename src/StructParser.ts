@@ -109,6 +109,11 @@ export class StructParser {
                     break;
                 }
 
+                case 'struct': {
+                    // @TODO Handle struct
+                    break;
+                }
+
                 default: {
                     if (!(method in TYPE_BITS)) {
                         break;

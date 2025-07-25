@@ -35,11 +35,8 @@ export class AddableStruct {
 
     public forEach(callback: (ref: tRef) => void) {
         const end = this._size;
-        const buf0 = this.vUint32
-        const step0 = SIZE_32BIT
-        let idx0 = SIZE_32BIT + 1
-        for (let i = 1; i <= end; i++, idx0 += step0) {
-            if (buf0[idx0] !== 0) callback(i as tRef);
+        for ( let ref = 1; ref <= end; ref++) {
+            if (this.vUint32[ref * SIZE_32BIT + 1] !== 0) callback(ref as tRef);
         }
     }
 

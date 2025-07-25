@@ -34,3 +34,4 @@ Keep in mind, that this library is just code generator that creates accessor cla
 It does not have any code for runtime except what was generated, making it extremely light to use in a project.
 
 Check spec/examples for more complex use cases.
+

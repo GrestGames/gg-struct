@@ -78,4 +78,9 @@ export class Struct<RefType extends number, DataType> {
     public bit<Name extends string, Type extends number = number>(name: Name, ...type: (Type | typeof ADD_MATH | typeof MUST_EXIST)[]): Struct<RefType, DataType & Record<Name, Type>> {
         return this as any;
     }
+
+    public struct<Name extends string, Type>(name: Name, type: Type): Struct<RefType, DataType & Record<Name, Type>> {
+        return this as any;
+    }
+
 }

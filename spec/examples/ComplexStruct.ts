@@ -45,11 +45,8 @@ abstract class ComplexStructBase {
 
     public forEach(callback: (ref: tRef33) => void) {
         const end = this._size;
-        const buf1 = this.v1Uint32
-        const step1 = B1_SIZE_16BIT
-        let idx1 = B1_SIZE_16BIT + 2
-        for (let i = 1; i <= end; i++, idx1 += step1) {
-            if (buf1[idx1] !== 0) callback(i as tRef33);
+        for ( let ref = 1; ref <= end; ref++) {
+            if (this.v1Uint32[ref * B1_SIZE_16BIT + 2] !== 0) callback(ref as tRef33);
         }
     }
 

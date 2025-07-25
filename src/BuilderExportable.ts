@@ -113,6 +113,7 @@ export class BuilderExportable {
                 properties: chunkProperties
             };
         });
+
         return chunkInfo;
     }
 
@@ -152,6 +153,21 @@ export class BuilderExportable {
             }
         }
 
+        const getExistsLines = () => {
+            const checks: string[] = [];
+            chunkInfo.forEach((chunk, i) => {
+                chunk.properties.forEach((prop) => {
+                    if (prop.mustExist) {
+                        checks.push("this." + chunk.viewName + "[ref" + prop.byteLocMulti + "] !== 0")
+                    }
+                })
+            })
+            if (struct.useNew && checks.length === 0) {
+                throw new Error("Must have at least one property marked as MUST_EXIST for '" + struct.name + "'")
+            }
+            return checks.join(" && ");
+        }
+
         return new CodeFile().push(new CodeTemplate(templateStr)
 
             .lines("fullSyncRatio", lines => {
@@ -159,12 +175,16 @@ export class BuilderExportable {
             })
 
             .lines("imports", lines => {
+                const importsMap = new Map<string, Set<string>>();
                 struct.chunks.forEach((chunk) => {
                     chunk.properties.forEach((property) => {
                         if (property.tsType && property.tsTypeImport) {
-                            lines.push("import {" + property.tsType + "} from \"" + property.tsTypeImport + "\";")
+                            (importsMap.get(property.tsTypeImport) || importsMap.set(property.tsTypeImport, new Set()).get(property.tsTypeImport)).add(property.tsType)
                         }
                     })
+                })
+                importsMap.forEach((imports, source) => {
+                    lines.push("import {" + Array.from(imports.values()).join(", ") + "} from \"" + source + "\";")
                 })
             })
 
@@ -241,33 +261,13 @@ export class BuilderExportable {
                 if (struct.useNew && checks.length === 0) {
                     throw new Error("Must have at least one property marked as MUST_EXIST for '" + struct.name + "'")
                 }
-                lines.push(checks.join(" && "))
+                lines.push(getExistsLines())
             })
 
             .lines("loop", (lines) => {
-                const viewVariables: Set<string> = new Set();
-                const addOperations: Set<string> = new Set();
-                const checks: string[] = [];
-                chunkInfo.forEach((chunk, i) => {
-                    chunk.properties.forEach((prop) => {
-                        if (prop.mustExist) {
-                            const viewName = "buf" + i;
-                            const stepName = "step" + i;
-                            const idxName = "idx" + i;
-                            viewVariables.add(
-                                "const " + viewName + " = this." + chunk.viewName + "\n" +
-                                (chunk.properties.length === 1 ? "" : "const " + stepName + " = " + prop.sizeConst + "\n") +
-                                "let " + idxName + " = " + (prop.byteLoc ? prop.byteLoc : "1")
-                            )
-                            addOperations.add(idxName + (chunk.properties.length === 1 ? "++" : " += " + stepName))
-                            checks.push(viewName + "[" + idxName + "] !== 0")
-                        }
-                    })
-                })
                 lines.push(`const end = this._size;
-${Array.from(viewVariables.values()).join("\n")}
-for (let i = 1; i <= end; i++, ${Array.from(addOperations.values()).join(", ")}) {
-    if (${checks.join(" && ")}) callback(i as ${ID});
+for ( let ref = 1; ref <= end; ref++) {
+    if (${getExistsLines()}) callback(ref as ${ID});
 }`)
             })
 
