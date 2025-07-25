@@ -28,7 +28,9 @@ abstract class AddableExportableStructBase {
     public forEach(callback: (ref: tRef) => void) {
         const end = this._size;
         for ( let ref = 1; ref <= end; ref++) {
-            if (this.vUint32[ref * SIZE_32BIT + 1] !== 0) callback(ref as tRef);
+            if (this.vUint32[ref * SIZE_32BIT + 1] !== 0) {
+                callback(ref as tRef);
+            }
         }
     }
 

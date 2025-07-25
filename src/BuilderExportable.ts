@@ -267,7 +267,9 @@ export class BuilderExportable {
             .lines("loop", (lines) => {
                 lines.push(`const end = this._size;
 for ( let ref = 1; ref <= end; ref++) {
-    if (${getExistsLines()}) callback(ref as ${ID});
+    if (${getExistsLines()}) {
+        callback(ref as ${ID});
+    }
 }`)
             })
 

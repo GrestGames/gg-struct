@@ -28,7 +28,9 @@ abstract class AddableExportableDirtyStructBase {
     public forEach(callback: (ref: tRef33) => void) {
         const end = this._size;
         for ( let ref = 1; ref <= end; ref++) {
-            if (this.vUint32[ref * SIZE_32BIT + 1] !== 0) callback(ref as tRef33);
+            if (this.vUint32[ref * SIZE_32BIT + 1] !== 0) {
+                callback(ref as tRef33);
+            }
         }
     }
 

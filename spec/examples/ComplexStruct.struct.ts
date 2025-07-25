@@ -23,4 +23,4 @@ new Struct({useDirty: true, useExport: true, useNew: true})
     .uint8("opacity", 1)
     .bool("isHighlighted")
     .bit("isAnimated")
-    .int8("something", typed<MyEnum>());
+    .int8("something", typed<MyEnum>())

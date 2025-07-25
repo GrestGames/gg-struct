@@ -30,7 +30,9 @@ abstract class SingleAddableExportableDirtyStructBase {
     public forEach(callback: (ref: tRef33) => void) {
         const end = this._size;
         for ( let ref = 1; ref <= end; ref++) {
-            if (this.spriteId[ref] !== 0) callback(ref as tRef33);
+            if (this.spriteId[ref] !== 0) {
+                callback(ref as tRef33);
+            }
         }
     }
 
